@@ -1,0 +1,171 @@
+﻿@using PagedList
+@using PagedList.Mvc
+@model FridgeHelper.Models.FoodListViewModel
+
+@{
+    ViewBag.Title = "冰箱";
+}
+
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+<hr />
+@if (ViewBag.error == true)
+{
+
+    <div class="alert alert-danger">
+        <strong>更動錯誤</strong>
+        <a href="#" class="close" data-dismiss="alert"> &times;</a>
+    </div>
+}
+
+@foreach (var item in Model.food)
+{
+    TimeSpan remain = item.expire_date - DateTime.Now;
+    int remainD = remain.Days + 1;
+    if (remainD < 0)
+    {
+        <div class="alert alert-danger">
+            @item.food_name 已經過期 @remainD 天 <strong>盡快清除</strong>
+            <a href="#" class="close" data-dismiss="alert"> &times;</a>
+        </div>
+    }
+    else if (remainD < 5)
+    {
+        <div class="alert alert-warning">
+            @item.food_name 再過 @remainD 天 <strong>將要過期</strong>
+            <a href="#" class="close" data-dismiss="alert"> &times;</a>
+        </div>
+
+    }
+}
+
+@if (ViewBag.error == true)
+{
+    <div class="alert alert-danger">
+        <strong>你沒有該冰箱的權限</strong>
+    </div>
+}
+else
+{
+
+    <h2>@ViewBag.FridgeName</h2>
+
+    <div class="row">
+        <div class="col-md-3">
+            <div>
+                <h4>切換到其他冰箱</h4>
+                @if (Model.fridge.Count() == 0)
+                {
+                    <div class="alert">
+                        <strong>錯誤</strong>
+                    </div>
+                }
+                else
+                {
+                    foreach (var item in Model.fridge)
+                    {
+                        <p>@Html.ActionLink(item.fName, "List", new { fridgeid = item.fId })</p>
+
+                    }
+                }
+            </div>
+        </div>
+
+
+        <div class="col-md-9">
+
+            @using (Html.BeginForm("List", "Food", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                <div class="row">
+                    <div class="col-md-4 form-group">
+                        @Html.EditorFor(x => x.search, new { htmlAttributes = new { @class = "form-control", placeholder = "想找些什麼?" } })
+
+                    </div>
+                    <div class="col-md-4">
+                        <input type="submit" class="btn btn-primary" value="Search">
+                    </div>
+                    <div class="col-md-offset-2 col-md-2">
+                        @Html.ActionLink("新增", "create", new { fridgeId = Model.fridgeId }, new { @class = "btn btn-warning" })
+                    </div>
+
+                    <input id="fridgeid" name="fridgeId" type="hidden" value="@ViewBag.fridgeId" />
+                </div>
+            }
+            @Html.PagedListPager(Model.food, page => Url.Action("List", new { fridgeid = ViewBag.fridgeId, page }))
+
+            @if (Model.food.Count() == 0)
+            {
+                <div class="alert alert-info">
+                    <strong>無其他食物</strong>
+                </div>
+            }
+            else
+            {
+                <table class="table">
+                    <tr>
+                        <th></th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.food.FirstOrDefault().food_name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.food.FirstOrDefault().price)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.food.FirstOrDefault().type)
+                        </th>
+                        <th>
+                            附註事項
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.food.FirstOrDefault().expire_date)
+                        </th>
+                        <th>剩餘天數</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+
+                    @foreach (var item in Model.food)
+                    {
+                        <tr>
+                            <td>
+                                <div class="img-responsive">
+                                    <img width="200"
+                                         src="../Upload/@item.photo"
+                                         alt=@item.food_name>
+                                </div>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.food_name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.price)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.type)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.comment)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.expire_date)
+                            </td>
+                            <td>
+                                @{
+                                    TimeSpan remain = item.expire_date - DateTime.Now;
+
+                                }
+                                @(remain.Days+1) 天
+                            </td>
+                            <td>
+                                @Html.ActionLink("刪除", "Delete",
+                    new { fridgeId = ViewBag.fridgeId, foodname = item.food_name }, new { onclick = "return confirm('確定刪除?');", @class = "btn btn-danger" })
+                            </td>
+                        </tr>
+                    }
+                </table>
+            }
+        </div>
+    </div>
+
+}
+
+

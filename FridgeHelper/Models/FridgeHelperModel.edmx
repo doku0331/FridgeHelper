@@ -1,0 +1,270 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="FridgeHelperModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Foods">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="fId" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fId" Type="int" Nullable="false" />
+          <Property Name="food_name" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="price" Type="int" />
+          <Property Name="photo" Type="nvarchar(max)" />
+          <Property Name="type" Type="nvarchar" MaxLength="5" Nullable="false" />
+          <Property Name="expire_date" Type="datetime" Nullable="false" />
+          <Property Name="comment" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Fridges">
+          <Key>
+            <PropertyRef Name="fId" />
+          </Key>
+          <Property Name="fId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fName" Type="nvarchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Members">
+          <Key>
+            <PropertyRef Name="account" />
+          </Key>
+          <Property Name="account" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="password" Type="varchar(max)" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OwnFridges">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fId" Type="int" Nullable="false" />
+          <Property Name="account" Type="varchar" MaxLength="15" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Foods__fId__2A4B4B5E">
+          <End Role="Fridges" Type="Self.Fridges" Multiplicity="1" />
+          <End Role="Foods" Type="Self.Foods" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fridges">
+              <PropertyRef Name="fId" />
+            </Principal>
+            <Dependent Role="Foods">
+              <PropertyRef Name="fId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OwnFridge__accou__2D27B809">
+          <End Role="Members" Type="Self.Members" Multiplicity="1" />
+          <End Role="OwnFridges" Type="Self.OwnFridges" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Members">
+              <PropertyRef Name="account" />
+            </Principal>
+            <Dependent Role="OwnFridges">
+              <PropertyRef Name="account" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OwnFridges__fId__2E1BDC42">
+          <End Role="Fridges" Type="Self.Fridges" Multiplicity="1" />
+          <End Role="OwnFridges" Type="Self.OwnFridges" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fridges">
+              <PropertyRef Name="fId" />
+            </Principal>
+            <Dependent Role="OwnFridges">
+              <PropertyRef Name="fId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FridgeHelperModelStoreContainer">
+          <EntitySet Name="Foods" EntityType="Self.Foods" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Fridges" EntityType="Self.Fridges" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Members" EntityType="Self.Members" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OwnFridges" EntityType="Self.OwnFridges" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Foods__fId__2A4B4B5E" Association="Self.FK__Foods__fId__2A4B4B5E">
+            <End Role="Fridges" EntitySet="Fridges" />
+            <End Role="Foods" EntitySet="Foods" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OwnFridge__accou__2D27B809" Association="Self.FK__OwnFridge__accou__2D27B809">
+            <End Role="Members" EntitySet="Members" />
+            <End Role="OwnFridges" EntitySet="OwnFridges" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OwnFridges__fId__2E1BDC42" Association="Self.FK__OwnFridges__fId__2E1BDC42">
+            <End Role="Fridges" EntitySet="Fridges" />
+            <End Role="OwnFridges" EntitySet="OwnFridges" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FridgeHelperModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Foods">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="fId" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fId" Type="Int32" Nullable="false" />
+          <Property Name="food_name" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="price" Type="Int32" />
+          <Property Name="photo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="type" Type="String" MaxLength="5" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="expire_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="comment" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Fridges" Relationship="Self.FK__Foods__fId__2A4B4B5E" FromRole="Foods" ToRole="Fridges" />
+        </EntityType>
+        <EntityType Name="Fridges">
+          <Key>
+            <PropertyRef Name="fId" />
+          </Key>
+          <Property Name="fId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Foods" Relationship="Self.FK__Foods__fId__2A4B4B5E" FromRole="Fridges" ToRole="Foods" />
+          <NavigationProperty Name="OwnFridges" Relationship="Self.FK__OwnFridges__fId__2E1BDC42" FromRole="Fridges" ToRole="OwnFridges" />
+        </EntityType>
+        <EntityType Name="Members">
+          <Key>
+            <PropertyRef Name="account" />
+          </Key>
+          <Property Name="account" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="OwnFridges" Relationship="Self.FK__OwnFridge__accou__2D27B809" FromRole="Members" ToRole="OwnFridges" />
+        </EntityType>
+        <EntityType Name="OwnFridges">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fId" Type="Int32" Nullable="false" />
+          <Property Name="account" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Fridges" Relationship="Self.FK__OwnFridges__fId__2E1BDC42" FromRole="OwnFridges" ToRole="Fridges" />
+          <NavigationProperty Name="Members" Relationship="Self.FK__OwnFridge__accou__2D27B809" FromRole="OwnFridges" ToRole="Members" />
+        </EntityType>
+        <Association Name="FK__Foods__fId__2A4B4B5E">
+          <End Role="Fridges" Type="Self.Fridges" Multiplicity="1" />
+          <End Role="Foods" Type="Self.Foods" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fridges">
+              <PropertyRef Name="fId" />
+            </Principal>
+            <Dependent Role="Foods">
+              <PropertyRef Name="fId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OwnFridges__fId__2E1BDC42">
+          <End Role="Fridges" Type="Self.Fridges" Multiplicity="1" />
+          <End Role="OwnFridges" Type="Self.OwnFridges" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fridges">
+              <PropertyRef Name="fId" />
+            </Principal>
+            <Dependent Role="OwnFridges">
+              <PropertyRef Name="fId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OwnFridge__accou__2D27B809">
+          <End Role="Members" Type="Self.Members" Multiplicity="1" />
+          <End Role="OwnFridges" Type="Self.OwnFridges" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Members">
+              <PropertyRef Name="account" />
+            </Principal>
+            <Dependent Role="OwnFridges">
+              <PropertyRef Name="account" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FridgeHelperEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Foods" EntityType="Self.Foods" />
+          <EntitySet Name="Fridges" EntityType="Self.Fridges" />
+          <EntitySet Name="Members" EntityType="Self.Members" />
+          <EntitySet Name="OwnFridges" EntityType="Self.OwnFridges" />
+          <AssociationSet Name="FK__Foods__fId__2A4B4B5E" Association="Self.FK__Foods__fId__2A4B4B5E">
+            <End Role="Fridges" EntitySet="Fridges" />
+            <End Role="Foods" EntitySet="Foods" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OwnFridges__fId__2E1BDC42" Association="Self.FK__OwnFridges__fId__2E1BDC42">
+            <End Role="Fridges" EntitySet="Fridges" />
+            <End Role="OwnFridges" EntitySet="OwnFridges" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OwnFridge__accou__2D27B809" Association="Self.FK__OwnFridge__accou__2D27B809">
+            <End Role="Members" EntitySet="Members" />
+            <End Role="OwnFridges" EntitySet="OwnFridges" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FridgeHelperModelStoreContainer" CdmEntityContainer="FridgeHelperEntities">
+          <EntitySetMapping Name="Foods">
+            <EntityTypeMapping TypeName="FridgeHelperModel.Foods">
+              <MappingFragment StoreEntitySet="Foods">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="fId" ColumnName="fId" />
+                <ScalarProperty Name="food_name" ColumnName="food_name" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="photo" ColumnName="photo" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="expire_date" ColumnName="expire_date" />
+                <ScalarProperty Name="comment" ColumnName="comment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Fridges">
+            <EntityTypeMapping TypeName="FridgeHelperModel.Fridges">
+              <MappingFragment StoreEntitySet="Fridges">
+                <ScalarProperty Name="fId" ColumnName="fId" />
+                <ScalarProperty Name="fName" ColumnName="fName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Members">
+            <EntityTypeMapping TypeName="FridgeHelperModel.Members">
+              <MappingFragment StoreEntitySet="Members">
+                <ScalarProperty Name="account" ColumnName="account" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OwnFridges">
+            <EntityTypeMapping TypeName="FridgeHelperModel.OwnFridges">
+              <MappingFragment StoreEntitySet="OwnFridges">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="fId" ColumnName="fId" />
+                <ScalarProperty Name="account" ColumnName="account" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="無" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

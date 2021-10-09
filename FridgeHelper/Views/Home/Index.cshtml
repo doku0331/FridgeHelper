@@ -1,0 +1,60 @@
+﻿﻿@model IEnumerable<FridgeHelper.Models.ExpiredFoodViewModel>
+@{
+    ViewBag.Title = "冰箱管理系統";
+}
+
+<div class="jumbotron">
+    <h1>歡迎來到冰箱管理系統</h1>
+    <h1>@Session["Welcome"]</h1>
+    <p class="lead">
+        就是一款普通的冰箱管理系統
+    </p>
+    <p>
+        @if (User.Identity.IsAuthenticated)
+        {
+
+            <a class="btn btn-primary btn-lg" href="@Url.Action("FrigList", "Fridge")">我的冰箱 &raquo;</a>
+
+        }
+        @*若無使用者登入，則列出*@
+        else
+        {
+            <a class="btn btn-primary btn-lg" href="@Url.Action("Login","Member")">登入 &raquo;</a>
+            <a class="btn btn-primary btn-lg" href="@Url.Action("Register","Member")">註冊 &raquo;</a>
+        }
+    </p>
+
+</div>
+<h3>過期通知</h3>
+@if (Model != null)
+{
+    foreach (var item in Model)
+    {
+        TimeSpan remain = item.expire_date - DateTime.Now;
+        int remainD = remain.Days + 1;
+        if (remainD < 0)
+        {
+            <div class="alert alert-danger">
+                @item.fName 中的 @item.food_name 已經過期 @remainD 天 <strong>盡快清除</strong>
+                <a href="#" class="close" data-dismiss="alert"> &times;</a>
+            </div>
+        }
+        else if (remainD < 5)
+        {
+            <div class="alert alert-warning">
+                @item.fName 中的 @item.food_name 再過 @remainD 天 <strong>將要過期</strong>
+                <a href="#" class="close" data-dismiss="alert"> &times;</a>
+            </div>
+
+        }
+    }
+}
+else
+{
+
+    <div class="alert alert-success">
+         <strong>冰箱中沒有過期或即將過期之食物</strong>
+        <a href="#" class="close" data-dismiss="alert"> &times;</a>
+    </div>
+
+}

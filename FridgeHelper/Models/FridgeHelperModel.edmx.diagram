@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="fdeb0436c90f40389b25e07d6795bd47" Name="Diagram1">
+        <EntityTypeShape EntityType="FridgeHelperModel.Foods" Width="1.5" PointX="3" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FridgeHelperModel.Fridges" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FridgeHelperModel.Members" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FridgeHelperModel.OwnFridges" Width="1.5" PointX="6" PointY="3.625" IsExpanded="true" />
+        <AssociationConnector Association="FridgeHelperModel.FK__Foods__fId__2A4B4B5E" ManuallyRouted="false" />
+        <AssociationConnector Association="FridgeHelperModel.FK__OwnFridges__fId__2E1BDC42" ManuallyRouted="false" />
+        <AssociationConnector Association="FridgeHelperModel.FK__OwnFridge__accou__2D27B809" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
